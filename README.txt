@@ -16,7 +16,7 @@ INSTALL
 INFO
 ----
 
-The check control these items:
+The check controls these items:
 
 * Controllers
 
