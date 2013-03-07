@@ -1,7 +1,7 @@
 PREREQUISITES
 -------------
 
-* arcconf
+* arcconf Version 1.0 (B19187)
 
 * python >= 2.6
 
