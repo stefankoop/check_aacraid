@@ -86,6 +86,8 @@ def get_logicaldevice_info(controllerid, ldid):
             level = get_val(line)
         elif line.startswith('Status of logical device'):
             status = get_val(line)
+        elif line.startswith('Status of Logical Device'):
+            status = get_val(line)
         elif line.startswith('Size'):
             size = get_val(line)
         elif line.startswith('Segment') or line.startswith('Group'):
