@@ -190,7 +190,7 @@ def cmk_info(controllerid):
     for k in disk_keys:
             status = 0
             statustxt = 'OK'
-            if disks[k]['status'] != 'Online':
+            if disks[k]['status'] not in ["Online", "Dedicated Hot-Spare", "Ready", "Online (JBOD)" ]:
                         status = 2 
 			statustxt = 'CRITICAL'
             item_name = 'Disk_'+disks[k]['id']
