@@ -84,8 +84,6 @@ def get_logicaldevice_info(controllerid, ldid):
         line = line.strip()
         if line.startswith('RAID level'):
             level = get_val(line)
-        elif line.startswith('Status of logical device'):
-            status = get_val(line)
         elif line.startswith('Status of Logical Device'):
             status = get_val(line)
         elif line.startswith('Size'):
@@ -151,7 +149,7 @@ def cmk_info(controllerid):
     if cinfo['status'] != 'Optimal':
         status = 2
 	statustxt = 'CRITICAL'
-    item_name = 'Controller_'+str(controllerid)
+    item_name = 'AACRAID_Controller_'+str(controllerid)
     performance_data = '-'
     check_output = statustxt + " Model:%(model)s Serial:%(serial)s Bios:%(bios)s Firmware:%(firmware)s Driver:%(driver)s LDs:%(lds)s Status:%(status)s" % cinfo
     output.append("%s %s %s %s" % (status,item_name,performance_data,check_output) )
@@ -164,7 +162,7 @@ def cmk_info(controllerid):
 	if linfo['status'] != 'Optimal':
                 status = 2
 		statustxt = 'CRITICAL'
-	item_name = 'LogicalDevice_'+linfo['id']
+	item_name = 'AACRAID_LogicalDevice_'+linfo['id']
 	performance_data = '-'
 	check_output = statustxt + " RAID:%(level)s Size:%(size)s Status:%(status)s" % linfo
         output.append("%s %s %s %s" % (status,item_name,performance_data,check_output) )
@@ -178,7 +176,7 @@ def cmk_info(controllerid):
 		if m.startswith('Missing'): 
                         status = 2 
 			statustxt = 'CRITICAL'
-		item_name = 'LogicalDevice_'+linfo['id']+'_Segment_'+str(segn) 
+		item_name = 'AACRAID_LogicalDevice_'+linfo['id']+'_Segment_'+str(segn) 
                 performance_data = '-'
                 check_output = statustxt + " " +  m
                 output.append("%s %s %s %s" % (status,item_name,performance_data,check_output) )	
@@ -190,10 +188,10 @@ def cmk_info(controllerid):
     for k in disk_keys:
             status = 0
             statustxt = 'OK'
-            if disks[k]['status'] not in ["Online", "Dedicated Hot-Spare", "Ready", "Online (JBOD)" ]:
+            if disks[k]['status'] != 'Online':
                         status = 2 
 			statustxt = 'CRITICAL'
-            item_name = 'Disk_'+disks[k]['id']
+            item_name = 'AACRAID_Disk_'+disks[k]['id']
             performance_data = '-'
             check_output = statustxt + " DiskID:%(diskid)s Model:%(model)s Vendor:%(vendor)s Status:%(status)s" % disks[k]
             output.append("%s %s %s %s" % (status,item_name,performance_data,check_output) )
@@ -207,3 +205,5 @@ if __name__ == '__main__':
 	    		print cmk_info(c)
 	else:
 		print "3 No_arcconf_Found - UNKNOWN (No arcconf binary Found or no Adaptec Controller present (remove check from local checks))"
+
+
